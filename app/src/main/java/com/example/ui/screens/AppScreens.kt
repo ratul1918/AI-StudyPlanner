@@ -69,7 +69,7 @@ sealed class ActiveScreen {
 @Composable
 fun MainStudyScreen(viewModel: StudyViewModel) {
     val currentUser by viewModel.currentUser.collectAsState()
-    var currentTab by rememberSaveable { mutableStateOf<ActiveScreen>(ActiveScreen.Dashboard) }
+    var currentTab by remember { mutableStateOf<ActiveScreen>(ActiveScreen.Dashboard) }
     var showNotifsDialog by remember { mutableStateOf(false) }
     val notificationsList by viewModel.notifications.collectAsState()
 
