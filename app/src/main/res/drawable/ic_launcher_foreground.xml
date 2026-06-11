@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Outer brain waves or digital orbit nodes -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M54,20c6.63,0 12,5.37 12,12s-5.37,12 -12,12s-12,-5.37 -12,-12s5.37,-12 12,-12z M54,26c-3.31,0 -6,2.69 -6,6s2.69,6 6,6s6,-2.69 6,-6s-2.69,-6 -6,-6z" />
+        
+    <!-- Glowing pulse lines (AI brain connectors) -->
+    <path
+        android:fillColor="#818CF8"
+        android:pathData="M54,38 L54,54" />
+        
+    <!-- Main mortarboard cap / open academic book shape -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,40 L78,50 L54,60 L30,50 Z" />
+    <path
+        android:fillColor="#E0E7FF"
+        android:pathData="M38,55 L38,68 C38,73 45,76 54,76 C63,76 70,73 70,68 L70,55 L54,62 Z" />
+        
+    <!-- Stylized AI star flashes/pulses -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M24,42 L26,45 L29,43 L27,40 L29,37 L26,39 L24,36 L25,39 Z" />
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M84,42 L82,45 L79,43 L81,40 L79,37 L82,39 L84,36 L83,39 Z" />
+        
+</vector>
