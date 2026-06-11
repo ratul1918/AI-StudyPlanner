@@ -63,6 +63,7 @@ sealed class ActiveScreen {
     object Planner : ActiveScreen()
     object Research : ActiveScreen()
     object Progress : ActiveScreen()
+    object More : ActiveScreen()
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -165,6 +166,7 @@ fun MainStudyScreen(viewModel: StudyViewModel) {
                         ActiveScreen.Planner -> StudyPlannerScreen(viewModel)
                         ActiveScreen.Research -> PaperAssistantScreen(viewModel)
                         ActiveScreen.Progress -> ProgressVisualizationScreen(viewModel)
+                        ActiveScreen.More -> MoreOptionsScreen(viewModel, onNavigate = { currentTab = it })
                     }
                 }
             }
@@ -2078,15 +2080,20 @@ fun StudyNavigationBar(activeScreen: ActiveScreen, onScreenSelected: (ActiveScre
             NavigationItem(ActiveScreen.Dashboard, Icons.Default.Dashboard, "Home"),
             NavigationItem(ActiveScreen.Notes, Icons.Default.LibraryBooks, "Library"),
             NavigationItem(ActiveScreen.Chat, Icons.Default.Forum, "Chat"),
-            NavigationItem(ActiveScreen.Quizzes, Icons.Default.Quiz, "Quiz"),
-            NavigationItem(ActiveScreen.Flashcards, Icons.Default.Style, "Cards"),
-            NavigationItem(ActiveScreen.Planner, Icons.Default.CalendarMonth, "Planner"),
-            NavigationItem(ActiveScreen.Research, Icons.Default.Science, "Scholarly"),
-            NavigationItem(ActiveScreen.Progress, Icons.Default.Analytics, "Stats")
+            NavigationItem(ActiveScreen.More, Icons.Default.MoreHoriz, "More")
         )
 
         navItems.forEach { item ->
-            val isSelected = activeScreen == item.screen
+            val isSelected = when (item.screen) {
+                ActiveScreen.More -> activeScreen == ActiveScreen.More ||
+                                     activeScreen == ActiveScreen.Summaries ||
+                                     activeScreen == ActiveScreen.Quizzes ||
+                                     activeScreen == ActiveScreen.Flashcards ||
+                                     activeScreen == ActiveScreen.Planner ||
+                                     activeScreen == ActiveScreen.Research ||
+                                     activeScreen == ActiveScreen.Progress
+                else -> activeScreen == item.screen
+            }
             NavigationBarItem(
                 selected = isSelected,
                 onClick = { onScreenSelected(item.screen) },
@@ -2150,5 +2157,151 @@ fun QuickActionButton(
             color = Color(0xFF64748B),
             letterSpacing = 0.5.sp
         )
+    }
+}
+
+// --- More Options Screen (Features under "More") ---
+@Composable
+fun MoreOptionsScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // Feature Header
+        Column(modifier = Modifier.padding(bottom = 4.dp)) {
+            Text(
+                text = "More Study Tools",
+                fontWeight = FontWeight.Bold,
+                color = GridWhite,
+                fontSize = 24.sp
+            )
+            Text(
+                text = "Explore additional personalized AI modules to accelerate your learning journey.",
+                color = GridWhite.copy(alpha = 0.7f),
+                fontSize = 14.sp
+            )
+        }
+
+        MoreOptionCard(
+            title = "Interactive Quizzes",
+            description = "Test your knowledge with unique AI-generated questions, multiple-choice options, and comprehensive feedback.",
+            icon = Icons.Default.Quiz,
+            iconBgColor = Color(0xFFD1FAE5), // Emerald-100
+            iconColor = Color(0xFF059669), // Emerald-600
+            onClick = { onNavigate(ActiveScreen.Quizzes) }
+        )
+
+        MoreOptionCard(
+            title = "Flashcards Trainer",
+            description = "Practice active recall with digital memory cards automatically distilled from your lecture documents.",
+            icon = Icons.Default.Style,
+            iconBgColor = Color(0xFFFFE4E6), // Rose-100
+            iconColor = Color(0xFFE11D48), // Rose-600
+            onClick = { onNavigate(ActiveScreen.Flashcards) }
+        )
+
+        MoreOptionCard(
+            title = "AI Study Roadmap Planner",
+            description = "Input your upcoming paper exams and receive customized day-by-day task lists and tracking countdowns.",
+            icon = Icons.Default.CalendarMonth,
+            iconBgColor = Color(0xFFE0E7FF), // Indigo-100
+            iconColor = Color(0xFF4F46E5), // Indigo-600
+            onClick = { onNavigate(ActiveScreen.Planner) }
+        )
+
+        MoreOptionCard(
+            title = "Scholarly Document Assistant",
+            description = "Extract deep methodologies, contribution matrices, and proper APA/IEEE scholarly citations.",
+            icon = Icons.Default.Science,
+            iconBgColor = Color(0xFFF3E8FF), // Purple-100
+            iconColor = Color(0xFF9333EA), // Purple-600
+            onClick = { onNavigate(ActiveScreen.Research) }
+        )
+
+        MoreOptionCard(
+            title = "Progress Analytics (Stats)",
+            description = "Visualize your actual study durations and review accuracy metrics using custom data graphs.",
+            icon = Icons.Default.Analytics,
+            iconBgColor = Color(0xFFFEF3C7), // Amber-100
+            iconColor = Color(0xFFD97706), // Amber-600
+            onClick = { onNavigate(ActiveScreen.Progress) }
+        )
+
+        MoreOptionCard(
+            title = "Notes Master Summaries",
+            description = "Review concentrated comprehensive key takeaways and highlights from your reading notes.",
+            icon = Icons.Default.Description,
+            iconBgColor = Color(0xFFE0F2FE), // Sky-100
+            iconColor = Color(0xFF0284C7), // Sky-600
+            onClick = { onNavigate(ActiveScreen.Summaries) }
+        )
+        
+        Spacer(modifier = Modifier.height(24.dp))
+    }
+}
+
+@Composable
+fun MoreOptionCard(
+    title: String,
+    description: String,
+    icon: ImageVector,
+    iconBgColor: Color,
+    iconColor: Color,
+    onClick: () -> Unit
+) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = Slate800),
+        border = BorderStroke(1.dp, Color(0xFFE8DEF8)),
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .testTag("more_option_${title.lowercase().replace(" ", "_")}")
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .background(iconBgColor, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = title,
+                    tint = iconColor,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    color = GridWhite,
+                    fontSize = 15.sp
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = description,
+                    color = GridWhite.copy(alpha = 0.65f),
+                    fontSize = 12.sp,
+                    lineHeight = 16.sp
+                )
+            }
+
+            Icon(
+                imageVector = Icons.Default.ArrowForward,
+                contentDescription = "Arrow",
+                tint = GridWhite.copy(alpha = 0.3f),
+                modifier = Modifier.size(18.dp)
+            )
+        }
     }
 }
