@@ -40,17 +40,31 @@ import com.example.data.database.FlashcardEntity
 import com.example.data.database.NoteEntity
 import com.example.data.database.SummaryEntity
 import com.example.ui.viewmodel.*
+import com.example.ui.theme.isDarkThemeGlobal
 import java.text.SimpleDateFormat
 import java.util.*
 
-// --- Vibrant Palette Custom Theme Colors ---
-val Slate900 = Color(0xFFFBF8FD)    // Main soft lilac background
-val Slate800 = Color(0xFFFFFFFF)    // Pure white card background
-val Indigo950 = Color(0xFFE8DEF8)   // Soft lilac transition or accent container
-val Indigo900 = Color(0xFF6750A4)   // Vibrant deep theme purple as primary
-val AccentCyan = Color(0xFF6750A4)  // Accent purple links/highlights
-val SoftPurple = Color(0xFFD0BCFF)  // Lighter purple details
-val GridWhite = Color(0xFF1C1B1F)   // Crisp charcoal dark text readability
+// --- Vibrant Palette Custom Theme Colors (Dynamic state-backed getters for runtime toggle) ---
+val Slate900: Color
+    get() = if (isDarkThemeGlobal) Color(0xFF0F172A) else Color(0xFFFBF8FD)    // Main theme background (Dark Slate vs Soft Lilac)
+
+val Slate800: Color
+    get() = if (isDarkThemeGlobal) Color(0xFF1E293B) else Color(0xFFFFFFFF)    // Card backgrounds (Deep Slate vs Pure White)
+
+val Indigo950: Color
+    get() = if (isDarkThemeGlobal) Color(0xFF1B1838) else Color(0xFFE8DEF8)   // Transition/Accent containers (Deep Purple vs Soft Lilac)
+
+val Indigo900: Color
+    get() = if (isDarkThemeGlobal) Color(0xFFD0BCFF) else Color(0xFF6750A4)   // Branding purple (Pastel Lavender vs Vibrant Royal Purple)
+
+val AccentCyan: Color
+    get() = if (isDarkThemeGlobal) Color(0xFF38BDF8) else Color(0xFF6750A4)   // Accent highlights (Bright Cyan vs Royal Purple)
+
+val SoftPurple: Color
+    get() = if (isDarkThemeGlobal) Color(0xFF334155) else Color(0xFFD0BCFF)   // Secondary borders/touches (Dark Slate vs Light Indigo)
+
+val GridWhite: Color
+    get() = if (isDarkThemeGlobal) Color(0xFFF8FAFC) else Color(0xFF1C1B1F)   // Text/Font readability (Crisp Off-White vs Dark Charcoal)
 
 
 sealed class ActiveScreen {
@@ -115,6 +129,17 @@ fun MainStudyScreen(viewModel: StudyViewModel) {
                             }
                         },
                         actions = {
+                            // Global Theme Toggle (Light / Dark mode) for late-night study sessions
+                            IconButton(
+                                onClick = { isDarkThemeGlobal = !isDarkThemeGlobal },
+                                modifier = Modifier.testTag("theme_toggle_button")
+                            ) {
+                                Icon(
+                                    imageVector = if (isDarkThemeGlobal) Icons.Default.LightMode else Icons.Default.DarkMode,
+                                    contentDescription = "Toggle Theme Mode",
+                                    tint = AccentCyan
+                                )
+                            }
                             // Notification Alert Icon (Module 12)
                             IconButton(onClick = { showNotifsDialog = true }) {
                                 Box {
