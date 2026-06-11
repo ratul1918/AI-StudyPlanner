@@ -43,14 +43,15 @@ import com.example.ui.viewmodel.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-// --- Custom Deep Luxury Indigo slate colors to avoid raw gray default look ---
-val Slate900 = Color(0xFF0F172A)
-val Slate800 = Color(0xFF1E293B)
-val Indigo950 = Color(0xFF1E1B4B)
-val Indigo900 = Color(0xFF312E81)
-val AccentCyan = Color(0xFF00E5FF)
-val SoftPurple = Color(0xFFC084FC)
-val GridWhite = Color(0xFFF1F5F9)
+// --- Vibrant Palette Custom Theme Colors ---
+val Slate900 = Color(0xFFFBF8FD)    // Main soft lilac background
+val Slate800 = Color(0xFFFFFFFF)    // Pure white card background
+val Indigo950 = Color(0xFFE8DEF8)   // Soft lilac transition or accent container
+val Indigo900 = Color(0xFF6750A4)   // Vibrant deep theme purple as primary
+val AccentCyan = Color(0xFF6750A4)  // Accent purple links/highlights
+val SoftPurple = Color(0xFFD0BCFF)  // Lighter purple details
+val GridWhite = Color(0xFF1C1B1F)   // Crisp charcoal dark text readability
+
 
 sealed class ActiveScreen {
     object Dashboard : ActiveScreen()
@@ -94,8 +95,8 @@ fun MainStudyScreen(viewModel: StudyViewModel) {
                 topBar = {
                     TopAppBar(
                         colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = Slate900.copy(alpha = 0.9f),
-                            titleContentColor = Color.White
+                            containerColor = Slate900.copy(alpha = 0.95f),
+                            titleContentColor = GridWhite
                         ),
                         title = {
                             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -136,7 +137,7 @@ fun MainStudyScreen(viewModel: StudyViewModel) {
                                 Icon(
                                     imageVector = Icons.Default.ExitToApp,
                                     contentDescription = "Logout",
-                                    tint = SoftPurple
+                                    tint = Indigo900
                                 )
                             }
                         }
@@ -187,7 +188,7 @@ fun MainStudyScreen(viewModel: StudyViewModel) {
                             Text(
                                 "Alerts & Countdown Hub",
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White,
+                                color = GridWhite,
                                 fontSize = 18.sp
                             )
                         }
@@ -241,13 +242,13 @@ fun AuthScreen(onLogin: (String, String) -> Unit, isLoading: Boolean, errorMsg: 
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             "AI Study Assistant",
-            color = Color.White,
+            color = GridWhite,
             fontWeight = FontWeight.Bold,
             fontSize = 28.sp
         )
         Text(
             "Smart Learning and Exam Preparation",
-            color = AccentCyan,
+            color = Indigo900,
             fontSize = 14.sp,
             modifier = Modifier.padding(top = 4.dp)
         )
@@ -257,8 +258,8 @@ fun AuthScreen(onLogin: (String, String) -> Unit, isLoading: Boolean, errorMsg: 
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text("Name", color = SoftPurple) },
-            textStyle = TextStyle(color = Color.White),
+            label = { Text("Name", color = Indigo900) },
+            textStyle = TextStyle(color = GridWhite),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AccentCyan,
                 unfocusedBorderColor = SoftPurple
@@ -273,8 +274,8 @@ fun AuthScreen(onLogin: (String, String) -> Unit, isLoading: Boolean, errorMsg: 
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email", color = SoftPurple) },
-            textStyle = TextStyle(color = Color.White),
+            label = { Text("Email", color = Indigo900) },
+            textStyle = TextStyle(color = GridWhite),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AccentCyan,
                 unfocusedBorderColor = SoftPurple
@@ -297,7 +298,7 @@ fun AuthScreen(onLogin: (String, String) -> Unit, isLoading: Boolean, errorMsg: 
                     .height(50.dp)
                     .testTag("login_button")
             ) {
-                Text("Secure Login & Sync UI", color = Slate900, fontWeight = FontWeight.Bold)
+                Text("Secure Login & Sync UI", color = Color.White, fontWeight = FontWeight.Bold)
             }
         }
 
@@ -326,18 +327,101 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Welcome Header
+        // Streak & Progress Card (Vibrant Gradient Theme)
         item {
             Card(
-                colors = CardDefaults.cardColors(containerColor = Slate800.copy(alpha = 0.8f)),
-                shape = RoundedCornerShape(16.dp)
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        Brush.linearGradient(
+                            colors = listOf(Color(0xFF6750A4), Color(0xFFD0BCFF))
+                        ),
+                        shape = RoundedCornerShape(24.dp)
+                    )
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
-                    Text("Welcome Back,", color = Color.White.copy(alpha = 0.6f), fontSize = 16.sp)
-                    Text("Rafiur Rahman", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 28.sp)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text("📚 Prep Goals: Keep up the 4-day streak! Active exams are approaching.", color = AccentCyan)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Top
+                    ) {
+                        Column {
+                            Text("Current Streak", color = Color.White.copy(alpha = 0.8f), fontSize = 13.sp, fontWeight = FontWeight.Medium)
+                            Text("12 Days 🔥", color = Color.White, fontWeight = FontWeight.Black, fontSize = 28.sp)
+                        }
+                        Box(
+                            modifier = Modifier
+                                .background(Color.White.copy(alpha = 0.2f), RoundedCornerShape(12.dp))
+                                .padding(horizontal = 12.dp, vertical = 6.dp)
+                        ) {
+                            Text("Exam: June 15", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("Daily Goal: 4/5 hrs", color = Color.White.copy(alpha = 0.9f), fontSize = 12.sp, fontWeight = FontWeight.Medium)
+                        Text("80%", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    }
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .background(Color.White.copy(alpha = 0.2f), RoundedCornerShape(4.dp))
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f) // 80% progress
+                                .fillMaxHeight()
+                                .background(Color.White, RoundedCornerShape(4.dp))
+                        )
+                    }
                 }
+            }
+        }
+
+        // Quick Actions (Vibrant Palette Mockup Row)
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                QuickActionButton(
+                    icon = Icons.Default.CloudUpload,
+                    label = "Upload",
+                    bgColor = Color(0xFFFFEDD5), // Orange-100
+                    iconColor = Color(0xFFEA580C), // Orange-600
+                    onClick = { onNavigate(ActiveScreen.Notes) },
+                    modifier = Modifier.weight(1f)
+                )
+                QuickActionButton(
+                    icon = Icons.Default.Forum,
+                    label = "Ask AI",
+                    bgColor = Color(0xFFE0E7FF), // Indigo-100
+                    iconColor = Color(0xFF4F46E5), // Indigo-600
+                    onClick = { onNavigate(ActiveScreen.Chat) },
+                    modifier = Modifier.weight(1f)
+                )
+                QuickActionButton(
+                    icon = Icons.Default.Quiz,
+                    label = "Quiz",
+                    bgColor = Color(0xFFD1FAE5), // Emerald-100
+                    iconColor = Color(0xFF059669), // Emerald-600
+                    onClick = { onNavigate(ActiveScreen.Quizzes) },
+                    modifier = Modifier.weight(1f)
+                )
+                QuickActionButton(
+                    icon = Icons.Default.Style,
+                    label = "Cards",
+                    bgColor = Color(0xFFFFE4E6), // Rose-100
+                    iconColor = Color(0xFFE11D48), // Rose-600
+                    onClick = { onNavigate(ActiveScreen.Flashcards) },
+                    modifier = Modifier.weight(1f)
+                )
             }
         }
 
@@ -508,20 +592,21 @@ fun NotesManagerScreen(viewModel: StudyViewModel) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text("Resource Library", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp)
-        Text("Organize and manage your PDFs, scanned notes, and images", color = GridWhite, fontSize = 14.sp)
+        Text("Resource Library", color = GridWhite, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+        Text("Organize and manage your PDFs, scanned notes, and images", color = GridWhite.copy(alpha = 0.7f), fontSize = 14.sp)
 
         // Folder Row Tab Selectors
         Spacer(modifier = Modifier.height(12.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(folders) { folder ->
+                val isSelected = (selectedFolder == folder)
                 FilterChip(
-                    selected = (selectedFolder == folder),
+                    selected = isSelected,
                     onClick = { viewModel.selectFolder(folder) },
                     label = { Text(folder) },
                     colors = FilterChipDefaults.filterChipColors(
-                        labelColor = Color.White,
-                        selectedLabelColor = Slate900,
+                        labelColor = GridWhite,
+                        selectedLabelColor = Color.White,
                         selectedContainerColor = AccentCyan
                     )
                 )
@@ -539,9 +624,9 @@ fun NotesManagerScreen(viewModel: StudyViewModel) {
                 .padding(vertical = 4.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Add, null, tint = Slate900)
+                Icon(Icons.Default.Add, null, tint = Color.White)
                 Spacer(modifier = Modifier.width(6.dp))
-                Text("Add Lecture Notes / Run OCR Scanner", color = Slate900, fontWeight = FontWeight.Bold)
+                Text("Add Lecture Notes / Run OCR Scanner", color = Color.White, fontWeight = FontWeight.Bold)
             }
         }
 
@@ -557,7 +642,7 @@ fun NotesManagerScreen(viewModel: StudyViewModel) {
                     .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                Text("No notes found in '$selectedFolder'. Click Add above!", color = Color.Yellow)
+                Text("No notes found in '$selectedFolder'. Click Add above!", color = Color(0xFFEA580C))
             }
         } else {
             LazyColumn(
@@ -567,6 +652,7 @@ fun NotesManagerScreen(viewModel: StudyViewModel) {
                 items(filteredList) { note ->
                     Card(
                         colors = CardDefaults.cardColors(containerColor = Slate800),
+                        border = BorderStroke(1.dp, Color(0xFFE8DEF8)),
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { viewModel.selectNote(note) }
@@ -609,22 +695,22 @@ fun NotesManagerScreen(viewModel: StudyViewModel) {
                             .verticalScroll(rememberScrollState()),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text("Add Study Materials", fontWeight = FontWeight.Bold, color = Color.White, fontSize = 20.sp)
+                        Text("Add Study Materials", fontWeight = FontWeight.Bold, color = GridWhite, fontSize = 20.sp)
                         
                         // Option A: Raw Input
-                        Text("Option 1: Type or Paste Lecture Content", color = SoftPurple, fontWeight = FontWeight.Bold)
+                        Text("Option 1: Type or Paste Lecture Content", color = Indigo900, fontWeight = FontWeight.Bold)
                         OutlinedTextField(
                             value = noteTitleInput,
                             onValueChange = { noteTitleInput = it },
                             label = { Text("Note Title", color = GridWhite) },
-                            textStyle = TextStyle(color = Color.White),
+                            textStyle = TextStyle(color = GridWhite),
                             modifier = Modifier.fillMaxWidth()
                         )
                         OutlinedTextField(
                             value = noteContentInput,
                             onValueChange = { noteContentInput = it },
                             label = { Text("Lecture Notes Content Text...", color = GridWhite) },
-                            textStyle = TextStyle(color = Color.White),
+                            textStyle = TextStyle(color = GridWhite),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(120.dp)
@@ -635,7 +721,7 @@ fun NotesManagerScreen(viewModel: StudyViewModel) {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             TextButton(onClick = { showAddDialog = false }) {
-                                Text("Cancel", color = Color.White)
+                                Text("Cancel", color = Indigo900)
                             }
                             Button(
                                 onClick = {
@@ -648,14 +734,14 @@ fun NotesManagerScreen(viewModel: StudyViewModel) {
                                 },
                                 colors = ButtonDefaults.buttonColors(containerColor = AccentCyan)
                             ) {
-                                Text("Create", color = Slate900)
+                                Text("Create", color = Color.White)
                             }
                         }
 
-                        Divider(color = Color.White.copy(alpha = 0.2f), modifier = Modifier.padding(vertical = 8.dp))
+                        Divider(color = GridWhite.copy(alpha = 0.1f), modifier = Modifier.padding(vertical = 8.dp))
 
                         // Option B: Interactive OCR (Module 4) Scan Option
-                        Text("Option 2: Run Multilingual OCR", color = SoftPurple, fontWeight = FontWeight.Bold)
+                        Text("Option 2: Run Multilingual OCR", color = Indigo900, fontWeight = FontWeight.Bold)
                         Text("Extracted text from images automatically (Bengali and English). Supports printed and handwritten material.", fontSize = 12.sp, color = GridWhite)
 
                         if (isOcrLoading) {
@@ -666,10 +752,10 @@ fun NotesManagerScreen(viewModel: StudyViewModel) {
                                     viewModel.runOcr("image/png", "MOCK_BASE_64", "OCR Extracts")
                                     showAddDialog = false
                                 },
-                                colors = ButtonDefaults.buttonColors(containerColor = SoftPurple),
+                                colors = ButtonDefaults.buttonColors(containerColor = SoftPurple, contentColor = GridWhite),
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                Row {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
                                     Icon(Icons.Default.PhotoCamera, null)
                                     Spacer(Modifier.width(6.dp))
                                     Text("Simulate Handwrite Image Scan")
@@ -696,23 +782,24 @@ fun SummariesScreen(viewModel: StudyViewModel) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text("AI Summary Generator", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp)
-        Text("Turn long resources into structured high-retention maps", color = GridWhite, fontSize = 14.sp)
+        Text("AI Summary Generator", color = GridWhite, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+        Text("Turn long resources into structured high-retention maps", color = GridWhite.copy(alpha = 0.7f), fontSize = 14.sp)
 
         if (selectedNote == null) {
             Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
-                Text("Please select or upload a Note first in the Library!", color = Color.Yellow)
+                Text("Please select or upload a Note first in the Library!", color = Color(0xFFEA580C))
             }
             return
         }
 
         Spacer(modifier = Modifier.height(12.dp))
         Card(
-            colors = CardDefaults.cardColors(containerColor = Slate800)
+            colors = CardDefaults.cardColors(containerColor = Slate800),
+            border = BorderStroke(1.dp, Color(0xFFE8DEF8))
         ) {
             Column(modifier = Modifier.padding(12.dp)) {
-                Text("Selected Document:", fontSize = 12.sp, color = SoftPurple)
-                Text(selectedNote!!.title, fontWeight = FontWeight.Bold, color = Color.White)
+                Text("Selected Document:", fontSize = 12.sp, color = Indigo900)
+                Text(selectedNote!!.title, fontWeight = FontWeight.Bold, color = GridWhite)
             }
         }
 
@@ -724,17 +811,19 @@ fun SummariesScreen(viewModel: StudyViewModel) {
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             formats.forEach { format ->
+                val isSel = (activeFormat == format)
                 Button(
                     onClick = { activeFormat = format },
+                    border = if (!isSel) BorderStroke(1.dp, Color(0xFFD0BCFF)) else null,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (activeFormat == format) AccentCyan else Slate800
+                        containerColor = if (isSel) AccentCyan else Color.White
                     ),
                     modifier = Modifier.weight(1f),
                     contentPadding = PaddingValues(horizontal = 4.dp)
                 ) {
                     Text(
                         format, 
-                        color = if (activeFormat == format) Slate900 else Color.White,
+                        color = if (isSel) Color.White else GridWhite,
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -780,7 +869,7 @@ fun SummariesScreen(viewModel: StudyViewModel) {
                     ) {
                         Text(
                             text = "No summary generated for $activeFormat format yet.",
-                            color = Color.Yellow,
+                            color = Color(0xFFEA580C),
                             textAlign = TextAlign.Center
                         )
                         Spacer(Modifier.height(12.dp))
@@ -788,7 +877,7 @@ fun SummariesScreen(viewModel: StudyViewModel) {
                             onClick = { viewModel.generateSummary(activeFormat) },
                             colors = ButtonDefaults.buttonColors(containerColor = AccentCyan)
                         ) {
-                            Text("Ask Gemini to Summarize", color = Slate900, fontWeight = FontWeight.Bold)
+                            Text("Ask Gemini to Summarize", color = Color.White, fontWeight = FontWeight.Bold)
                         }
                     }
                 } else {
@@ -803,7 +892,7 @@ fun SummariesScreen(viewModel: StudyViewModel) {
                             )
                             Text(
                                 text = displayText,
-                                color = Color.White,
+                                color = GridWhite,
                                 lineHeight = 22.sp,
                                 fontSize = 15.sp
                             )
@@ -813,7 +902,7 @@ fun SummariesScreen(viewModel: StudyViewModel) {
                                 colors = ButtonDefaults.buttonColors(containerColor = Indigo900),
                                 modifier = Modifier.align(Alignment.CenterStart)
                             ) {
-                                Text("Re-Summarize")
+                                Text("Re-Summarize", color = Color.White)
                             }
                         }
                     }
@@ -842,8 +931,8 @@ fun ChatWithNotesScreen(viewModel: StudyViewModel) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text("Local Document RAG", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp)
-        Text("AI queries notes directly with page-number citations", color = GridWhite, fontSize = 14.sp)
+        Text("Local Document RAG", color = GridWhite, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+        Text("AI queries notes directly with page-number citations", color = GridWhite.copy(alpha = 0.7f), fontSize = 14.sp)
 
         if (selectedNote == null) {
             Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
@@ -984,8 +1073,8 @@ fun InteractiveQuizScreen(viewModel: StudyViewModel) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text("Practice Assessments", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp)
-        Text("AI generates customized MCQ, True/False, and grading rubrics", color = GridWhite, fontSize = 14.sp)
+        Text("Practice Assessments", color = GridWhite, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+        Text("AI generates customized MCQ, True/False, and grading rubrics", color = GridWhite.copy(alpha = 0.7f), fontSize = 14.sp)
 
         if (selectedNote == null) {
             Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
@@ -1244,8 +1333,8 @@ fun FlashcardTrainerScreen(viewModel: StudyViewModel) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Retention Trainer", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp)
-        Text("Flippable flashcards compiled directly by AI", color = GridWhite, fontSize = 14.sp)
+        Text("Retention Trainer", color = GridWhite, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+        Text("Flippable flashcards compiled directly by AI", color = GridWhite.copy(alpha = 0.7f), fontSize = 14.sp)
 
         if (selectedNote == null) {
             Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
@@ -1465,8 +1554,8 @@ fun StudyPlannerScreen(viewModel: StudyViewModel) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text("AI Study Roadmap", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp)
-        Text("Personalized calendars optimized around exams and hourly targets", color = GridWhite, fontSize = 14.sp)
+        Text("AI Study Roadmap", color = GridWhite, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+        Text("Personalized calendars optimized around exams and hourly targets", color = GridWhite.copy(alpha = 0.7f), fontSize = 14.sp)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -1600,8 +1689,8 @@ fun PaperAssistantScreen(viewModel: StudyViewModel) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text("Scholarly Paper Assistant", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp)
-        Text("Extract objectives, findings, limitations, and standard citations automatically", color = GridWhite, fontSize = 14.sp)
+        Text("Scholarly Paper Assistant", color = GridWhite, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+        Text("Extract objectives, findings, limitations, and standard citations automatically", color = GridWhite.copy(alpha = 0.7f), fontSize = 14.sp)
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -1693,8 +1782,8 @@ fun ProgressVisualizationScreen(viewModel: StudyViewModel) {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("Learning Analytics", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp)
-        Text("Canvas data visualizations recording weekly minutes and accuracy ratios", color = GridWhite, fontSize = 14.sp)
+        Text("Learning Analytics", color = GridWhite, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+        Text("Canvas data visualizations recording weekly minutes and accuracy ratios", color = GridWhite.copy(alpha = 0.7f), fontSize = 14.sp)
 
         // Plot 1: Study Minutes Bar Chart
         Text("Weekly Study Engagement (Minutes)", fontWeight = FontWeight.Bold, color = AccentCyan)
@@ -1777,16 +1866,16 @@ fun ProgressVisualizationScreen(viewModel: StudyViewModel) {
                             style = Stroke(width = 8.dp.toPx(), cap = StrokeCap.Round)
                         )
                     }
-                    Text("85%", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    Text("85%", color = GridWhite, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                 }
 
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Column {
-                    Text("Diagnostic Overview", fontWeight = FontWeight.Bold, color = Color.White)
-                    Text("• Overall Accuracy: 85% Score", color = GridWhite, fontSize = 13.sp)
-                    Text("• Weakness: Preemption timing thresholds", color = Color.Yellow, fontSize = 13.sp)
-                    Text("• Strength: Coffman Deadlock structures", color = Color.Green, fontSize = 13.sp)
+                    Text("Diagnostic Overview", fontWeight = FontWeight.Bold, color = GridWhite)
+                    Text("• Overall Accuracy: 85% Score", color = GridWhite.copy(alpha = 0.8f), fontSize = 13.sp)
+                    Text("• Weakness: Preemption timing thresholds", color = Color(0xFFEA580C), fontSize = 13.sp)
+                    Text("• Strength: Coffman Deadlock structures", color = Color(0xFF059669), fontSize = 13.sp)
                 }
             }
         }
@@ -1799,8 +1888,8 @@ data class NavigationItem(val screen: ActiveScreen, val icon: ImageVector, val n
 @Composable
 fun StudyNavigationBar(activeScreen: ActiveScreen, onScreenSelected: (ActiveScreen) -> Unit) {
     NavigationBar(
-        containerColor = Slate900,
-        contentColor = Color.White
+        containerColor = Color.White,
+        contentColor = Color(0xFF1D192B)
     ) {
         val navItems = listOf(
             NavigationItem(ActiveScreen.Dashboard, Icons.Default.Dashboard, "Home"),
@@ -1822,21 +1911,61 @@ fun StudyNavigationBar(activeScreen: ActiveScreen, onScreenSelected: (ActiveScre
                     Icon(
                         imageVector = item.icon,
                         contentDescription = item.name,
-                        tint = if (isSelected) AccentCyan else Color.White.copy(alpha = 0.6f)
+                        tint = if (isSelected) Color(0xFF1D192B) else Color(0xFF94A3B8)
                     )
                 },
                 label = {
                     Text(
                         item.name,
                         fontSize = 10.sp,
-                        color = if (isSelected) AccentCyan else Color.White.copy(alpha = 0.6f),
+                        color = if (isSelected) Color(0xFF1D192B) else Color(0xFF94A3B8),
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Indigo900
+                    indicatorColor = Color(0xFFE8DEF8)
                 )
             )
         }
+    }
+}
+
+// --- Dashboard Quick Action Button Composable ---
+@Composable
+fun QuickActionButton(
+    icon: ImageVector,
+    label: String,
+    bgColor: Color,
+    iconColor: Color,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .clickable { onClick() }
+            .padding(4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .size(56.dp)
+                .background(bgColor, RoundedCornerShape(16.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
+                tint = iconColor,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(
+            text = label,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF64748B),
+            letterSpacing = 0.5.sp
+        )
     }
 }
