@@ -421,7 +421,7 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
             if (examCountdown != null && subjectStr != null) {
                 Card(
                     colors = CardDefaults.cardColors(containerColor = Slate800),
-                    border = BorderStroke(1.dp, Color(0xFFE8DEF8)),
+                    border = BorderStroke(1.dp, SoftPurple),
                     shape = RoundedCornerShape(20.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -434,17 +434,17 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        // Days Left Circle Badge
+                        // Days Left Circle Badge (Premium Monospace Styling)
                         Box(
                             modifier = Modifier
                                 .size(64.dp)
                                 .drawBehind {
                                     drawCircle(
-                                        color = Color(0xFFE8DEF8),
+                                        color = Indigo950,
                                         radius = size.minDimension / 2f
                                     )
                                     drawCircle(
-                                        color = Color(0xFF6750A4),
+                                        color = Indigo900,
                                         radius = size.minDimension / 2f,
                                         style = Stroke(width = 3.dp.toPx())
                                     )
@@ -455,13 +455,15 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                                 Text(
                                     text = "$examCountdown",
                                     fontWeight = FontWeight.Black,
-                                    color = Color(0xFF6750A4),
-                                    fontSize = 20.sp
+                                    color = Indigo900,
+                                    fontSize = 22.sp,
+                                    fontFamily = FontFamily.Monospace,
+                                    letterSpacing = (-0.5).sp
                                 )
                                 Text(
                                     text = if (examCountdown == 1) "Day" else "Days",
                                     fontWeight = FontWeight.Bold,
-                                    color = Color(0xFF6750A4).copy(alpha = 0.8f),
+                                    color = Indigo900.copy(alpha = 0.8f),
                                     fontSize = 11.sp
                                 )
                             }
@@ -471,7 +473,7 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = "EXAM COUNTDOWN",
-                                color = Color(0xFF6750A4),
+                                color = AccentCyan,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 11.sp,
                                 letterSpacing = 1.sp
@@ -480,13 +482,13 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                             Text(
                                 text = subjectStr,
                                 fontWeight = FontWeight.Bold,
-                                color = Color(0xFF1C1B1F),
+                                color = GridWhite,
                                 fontSize = 16.sp
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = "Keep studying to reach your daily hourly targets of $subjectStr exam!",
-                                color = Color(0xFF1C1B1F).copy(alpha = 0.6f),
+                                color = GridWhite.copy(alpha = 0.7f),
                                 fontSize = 12.sp,
                                 lineHeight = 16.sp
                             )
@@ -497,7 +499,7 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                             ) {
                                 Text(
                                     text = "View Study Planner",
-                                    color = Color(0xFF6750A4),
+                                    color = AccentCyan,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 12.sp
                                 )
@@ -505,7 +507,7 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                                 Icon(
                                     imageVector = Icons.Default.ArrowForward,
                                     contentDescription = "Go",
-                                    tint = Color(0xFF6750A4),
+                                    tint = AccentCyan,
                                     modifier = Modifier.size(14.dp)
                                 )
                             }
@@ -516,7 +518,7 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                 // If studyPlan is null, show Setup CTA
                 Card(
                     colors = CardDefaults.cardColors(containerColor = Slate800),
-                    border = BorderStroke(1.dp, Color(0xFFE8DEF8)),
+                    border = BorderStroke(1.dp, SoftPurple),
                     shape = RoundedCornerShape(20.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -532,20 +534,20 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                         Box(
                             modifier = Modifier
                                 .size(56.dp)
-                                .background(Color(0xFFE8DEF8), CircleShape),
+                                .background(Indigo950, CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = Icons.Default.CalendarMonth,
                                 contentDescription = "No Plans",
-                                tint = Color(0xFF6750A4),
+                                tint = Indigo900,
                                 modifier = Modifier.size(28.dp)
                             )
                         }
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = "UPCOMING EXAMS",
-                                color = Color(0xFF1C1B1F).copy(alpha = 0.5f),
+                                color = GridWhite.copy(alpha = 0.5f),
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 10.sp,
                                 letterSpacing = 1.sp
@@ -554,13 +556,13 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                             Text(
                                 text = "Setup Exam Target",
                                 fontWeight = FontWeight.Bold,
-                                color = Color(0xFF1C1B1F),
+                                color = GridWhite,
                                 fontSize = 16.sp
                             )
                             Spacer(modifier = Modifier.height(2.dp))
                             Text(
                                 text = "Build your custom AI study plan daily roadmap now!",
-                                color = Color(0xFF1C1B1F).copy(alpha = 0.6f),
+                                color = GridWhite.copy(alpha = 0.7f),
                                 fontSize = 12.sp,
                                 lineHeight = 16.sp
                             )
@@ -568,7 +570,7 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                             Button(
                                 onClick = { onNavigate(ActiveScreen.Planner) },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFF6750A4),
+                                    containerColor = AccentCyan,
                                     contentColor = Color.White
                                 ),
                                 shape = RoundedCornerShape(12.dp),
@@ -2277,9 +2279,12 @@ fun MoreOptionCard(
     iconColor: Color,
     onClick: () -> Unit
 ) {
+    val finalIconBg = if (isDarkThemeGlobal) iconColor.copy(alpha = 0.2f) else iconBgColor
+    val finalIconTint = if (isDarkThemeGlobal) Color.White else iconColor
+
     Card(
         colors = CardDefaults.cardColors(containerColor = Slate800),
-        border = BorderStroke(1.dp, Color(0xFFE8DEF8)),
+        border = BorderStroke(1.dp, SoftPurple),
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -2294,13 +2299,13 @@ fun MoreOptionCard(
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .background(iconBgColor, CircleShape),
+                    .background(finalIconBg, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = title,
-                    tint = iconColor,
+                    tint = finalIconTint,
                     modifier = Modifier.size(24.dp)
                 )
             }
