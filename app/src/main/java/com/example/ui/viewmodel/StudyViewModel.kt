@@ -132,7 +132,7 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
             if (user == null) {
                 user = UserEntity(
                     userId = defaultId,
-                    name = "Rafiur Rahman",
+                    name = "rafiur",
                     email = "rafiurrahman1918@gmail.com",
                     photoUrl = "avatar_student_default"
                 )
@@ -724,8 +724,8 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
                            - Future research should evaluate specialized FPGA compiling schedules.
                            
                         5. SCHOLARLY CITATIONS:
-                           - APA: Rahman, R. (2026). Decoupled Deep Attention Networks. AI Academic Reviews, 14(2), 105-118.
-                           - IEEE: R. Rahman, "Decoupled Deep Attention Networks," AI Acad. Rev., vol. 14, no. 2, pp. 105-118, 2026.
+                           - APA: rafiur (2026). Decoupled Deep Attention Networks. AI Academic Reviews, 14(2), 105-118.
+                           - IEEE: rafiur, "Decoupled Deep Attention Networks," AI Acad. Rev., vol. 14, no. 2, pp. 105-118, 2026.
                     """.trimIndent()
                 } else {
                     val result = repository.analyzePapers(title, paperContent)

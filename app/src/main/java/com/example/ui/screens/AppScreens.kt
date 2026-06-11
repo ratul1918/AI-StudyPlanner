@@ -224,7 +224,7 @@ fun MainStudyScreen(viewModel: StudyViewModel) {
 @Composable
 fun AuthScreen(onLogin: (String, String) -> Unit, isLoading: Boolean, errorMsg: String?) {
     var email by remember { mutableStateOf("rafiurrahman1918@gmail.com") }
-    var name by remember { mutableStateOf("Rafiur Rahman") }
+    var name by remember { mutableStateOf("rafiur") }
 
     Column(
         modifier = Modifier
@@ -331,6 +331,7 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
         item {
             Card(
                 colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+                shape = RoundedCornerShape(24.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
@@ -470,6 +471,7 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
         item {
             Card(
                 colors = CardDefaults.cardColors(containerColor = Slate800),
+                border = BorderStroke(1.dp, Color(0xFFE8DEF8)),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -478,25 +480,25 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Active Note Context", fontWeight = FontWeight.Bold, color = Color.White)
+                        Text("Active Note Context", fontWeight = FontWeight.Bold, color = GridWhite)
                         AssistChip(
                             onClick = { onNavigate(ActiveScreen.Notes) },
                             label = { Text("Change notes") },
                             colors = AssistChipDefaults.assistChipColors(
-                                labelColor = AccentCyan,
-                                leadingIconContentColor = AccentCyan
+                                labelColor = Indigo900,
+                                leadingIconContentColor = Indigo900
                             ),
                             border = BorderStroke(1.dp, SoftPurple)
                         )
                     }
 
                     selectedNote?.let { note ->
-                        Text(note.title, fontWeight = FontWeight.Bold, color = AccentCyan, fontSize = 18.sp)
+                        Text(note.title, fontWeight = FontWeight.Bold, color = Indigo900, fontSize = 18.sp)
                         Text(
                             text = note.contentText,
                             maxLines = 3,
                             overflow = TextOverflow.Ellipsis,
-                            color = GridWhite,
+                            color = GridWhite.copy(alpha = 0.8f),
                             modifier = Modifier.padding(top = 4.dp)
                         )
                         Row(
@@ -505,18 +507,24 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                         ) {
                             Button(
                                 onClick = { onNavigate(ActiveScreen.Summaries) },
-                                colors = ButtonDefaults.buttonColors(containerColor = Indigo900)
+                                colors = ButtonDefaults.buttonColors(containerColor = Indigo900, contentColor = Color.White)
                             ) {
                                 Text("Summary")
                             }
                             Button(
                                 onClick = { onNavigate(ActiveScreen.Chat) },
-                                colors = ButtonDefaults.buttonColors(containerColor = SoftPurple)
+                                colors = ButtonDefaults.buttonColors(containerColor = SoftPurple, contentColor = Indigo900)
                             ) {
                                 Text("Ask Chat")
                             }
                         }
-                    } ?: Text("No notes uploaded. Please add one!", color = Color.Yellow)
+                    } ?: Text(
+                        text = "No notes uploaded. Please add one!",
+                        color = Color(0xFFEA580C),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
                 }
             }
         }
@@ -524,8 +532,9 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
         // AI Recommendations & Tips
         item {
             Card(
-                colors = CardDefaults.cardColors(containerColor = Indigo900.copy(alpha = 0.5f)),
-                border = BorderStroke(1.dp, AccentCyan.copy(alpha = 0.5f))
+                colors = CardDefaults.cardColors(containerColor = Indigo950.copy(alpha = 0.3f)),
+                border = BorderStroke(1.dp, Indigo900.copy(alpha = 0.15f)),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
@@ -534,16 +543,16 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                     Icon(
                         imageVector = Icons.Default.Lightbulb,
                         contentDescription = "Tips",
-                        tint = AccentCyan,
+                        tint = Indigo900,
                         modifier = Modifier.size(36.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
-                        Text("AI Study Strategy Tip", fontWeight = FontWeight.Bold, color = Color.White)
+                        Text("AI Study Strategy Tip", fontWeight = FontWeight.Bold, color = GridWhite)
                         Text(
                             text = "Based on CPU Scheduling quizzes, try active recall on 'Round Robin vs FCFS' today! It is predicted to be 30% of your exam grade.",
                             fontSize = 13.sp,
-                            color = GridWhite
+                            color = GridWhite.copy(alpha = 0.8f)
                         )
                     }
                 }
@@ -556,15 +565,18 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
 fun MetricWidget(title: String, value: String, icon: ImageVector, modifier: Modifier = Modifier) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Slate800),
+        border = BorderStroke(1.dp, Color(0xFFE8DEF8)),
         modifier = modifier
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(imageVector = icon, contentDescription = null, tint = AccentCyan, modifier = Modifier.size(28.dp))
+            Icon(imageVector = icon, contentDescription = null, tint = Indigo900, modifier = Modifier.size(28.dp))
             Spacer(modifier = Modifier.height(8.dp))
-            Text(value, fontWeight = FontWeight.Bold, color = Color.White, fontSize = 20.sp)
+            Text(value, fontWeight = FontWeight.Bold, color = GridWhite, fontSize = 20.sp)
             Text(title, color = GridWhite.copy(alpha = 0.7f), fontSize = 12.sp, textAlign = TextAlign.Center)
         }
     }
