@@ -172,6 +172,13 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
                 _progressHistory.value = it
             }
         }
+        viewModelScope.launch {
+            repository.getStudyPlansFlow(userId).collect { plans ->
+                if (_studyPlan.value == null && plans.isNotEmpty()) {
+                    _studyPlan.value = parseStudyPlanJsonStr(plans.first().planDataJson)
+                }
+            }
+        }
     }
 
     fun selectNote(note: NoteEntity) {

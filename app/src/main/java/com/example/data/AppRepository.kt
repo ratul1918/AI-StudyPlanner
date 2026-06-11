@@ -269,6 +269,53 @@ class AppRepository(private val studyDao: StudyDao) {
             recordStudySession(userId, "2026-06-09", 60, 90.0f, "Computer Science")
             recordStudySession(userId, "2026-06-10", 30, 75.0f, "Computer Science")
             recordStudySession(userId, "2026-06-11", 50, 85.0f, "Computer Science")
+
+            // Prepopulate an active Study Plan
+            val defaultPlanJson = """
+                {
+                  "subject": "Operating Systems",
+                  "examCountdownDays": 7,
+                  "schedule": [
+                    {
+                      "day": "Day 1",
+                      "focusTopic": "Core Terminology & Introductions",
+                      "allocatedHours": 2.0,
+                      "activities": ["Read core chapters", "Establish active recall definitions"],
+                      "status": "Completed"
+                    },
+                    {
+                      "day": "Day 2",
+                      "focusTopic": "Review Mathematical formulas and Equations",
+                      "allocatedHours": 2.0,
+                      "activities": ["Do sample proofs", "Attempt flashcard retention trials"],
+                      "status": "Completed"
+                    },
+                    {
+                      "day": "Day 3",
+                      "focusTopic": "Detailed MCQ Practice Run",
+                      "allocatedHours": 3.0,
+                      "activities": ["Generate AI Quiz", "Solve 20 past exam issues"],
+                      "status": "Pending"
+                    },
+                    {
+                      "day": "Day 4",
+                      "focusTopic": "Comprehensive final Revision",
+                      "allocatedHours": 1.5,
+                      "activities": ["Flashcards Mastery overview", "Relax and rest"],
+                      "status": "Pending"
+                    }
+                  ]
+                }
+            """.trimIndent()
+            studyDao.insertStudyPlan(
+                StudyPlanEntity(
+                    userId = userId,
+                    subject = "Operating Systems",
+                    examDate = "2026-06-18",
+                    studyHours = 2.0f,
+                    planDataJson = defaultPlanJson
+                )
+            )
         }
     }
 

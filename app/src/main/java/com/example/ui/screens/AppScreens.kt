@@ -315,6 +315,7 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
     val notes by viewModel.notesList.collectAsState()
     val rawProgress by viewModel.progressHistory.collectAsState()
     val flashcards by viewModel.flashcardList.collectAsState()
+    val studyPlan by viewModel.studyPlan.collectAsState()
 
     // Calculate metrics
     val streakCount = 4
@@ -380,6 +381,176 @@ fun DashboardScreen(viewModel: StudyViewModel, onNavigate: (ActiveScreen) -> Uni
                                 .fillMaxHeight()
                                 .background(Color.White, RoundedCornerShape(4.dp))
                         )
+                    }
+                }
+            }
+        }
+
+        // Countdown Widget (displays days remaining until the next scheduled exam from user's study plan)
+        item {
+            val examCountdown = studyPlan?.examCountdown
+            val subjectStr = studyPlan?.subject
+            
+            if (examCountdown != null && subjectStr != null) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = Slate800),
+                    border = BorderStroke(1.dp, Color(0xFFE8DEF8)),
+                    shape = RoundedCornerShape(20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("countdown_widget")
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        // Days Left Circle Badge
+                        Box(
+                            modifier = Modifier
+                                .size(64.dp)
+                                .drawBehind {
+                                    drawCircle(
+                                        color = Color(0xFFE8DEF8),
+                                        radius = size.minDimension / 2f
+                                    )
+                                    drawCircle(
+                                        color = Color(0xFF6750A4),
+                                        radius = size.minDimension / 2f,
+                                        style = Stroke(width = 3.dp.toPx())
+                                    )
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(
+                                    text = "$examCountdown",
+                                    fontWeight = FontWeight.Black,
+                                    color = Color(0xFF6750A4),
+                                    fontSize = 20.sp
+                                )
+                                Text(
+                                    text = if (examCountdown == 1) "Day" else "Days",
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF6750A4).copy(alpha = 0.8f),
+                                    fontSize = 11.sp
+                                )
+                            }
+                        }
+
+                        // Info Details
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "EXAM COUNTDOWN",
+                                color = Color(0xFF6750A4),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 11.sp,
+                                letterSpacing = 1.sp
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = subjectStr,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF1C1B1F),
+                                fontSize = 16.sp
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "Keep studying to reach your daily hourly targets of $subjectStr exam!",
+                                color = Color(0xFF1C1B1F).copy(alpha = 0.6f),
+                                fontSize = 12.sp,
+                                lineHeight = 16.sp
+                            )
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.clickable { onNavigate(ActiveScreen.Planner) }
+                            ) {
+                                Text(
+                                    text = "View Study Planner",
+                                    color = Color(0xFF6750A4),
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 12.sp
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Icon(
+                                    imageVector = Icons.Default.ArrowForward,
+                                    contentDescription = "Go",
+                                    tint = Color(0xFF6750A4),
+                                    modifier = Modifier.size(14.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            } else {
+                // If studyPlan is null, show Setup CTA
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = Slate800),
+                    border = BorderStroke(1.dp, Color(0xFFE8DEF8)),
+                    shape = RoundedCornerShape(20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("countdown_widget")
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(56.dp)
+                                .background(Color(0xFFE8DEF8), CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.CalendarMonth,
+                                contentDescription = "No Plans",
+                                tint = Color(0xFF6750A4),
+                                modifier = Modifier.size(28.dp)
+                            )
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "UPCOMING EXAMS",
+                                color = Color(0xFF1C1B1F).copy(alpha = 0.5f),
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 10.sp,
+                                letterSpacing = 1.sp
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "Setup Exam Target",
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF1C1B1F),
+                                fontSize = 16.sp
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "Build your custom AI study plan daily roadmap now!",
+                                color = Color(0xFF1C1B1F).copy(alpha = 0.6f),
+                                fontSize = 12.sp,
+                                lineHeight = 16.sp
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(
+                                onClick = { onNavigate(ActiveScreen.Planner) },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF6750A4),
+                                    contentColor = Color.White
+                                ),
+                                shape = RoundedCornerShape(12.dp),
+                                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp),
+                                modifier = Modifier.height(34.dp)
+                            ) {
+                                Text("Create Study Plan", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
                     }
                 }
             }
